@@ -43,7 +43,10 @@
     z-index: 1000;
     display: flex; align-items: center; justify-content: space-between;
     padding: 20px 60px;
-    background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+    background: rgba(10,10,10,0.97);
+    border-bottom: 1px solid rgba(245,184,0,0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
   .nav-logo {
     display: flex; align-items: center; gap: 14px; cursor: pointer;
@@ -498,73 +501,143 @@
 
   /* ── MOBILE (≤640px) ── */
   @media (max-width: 640px) {
-    nav { padding: 14px 20px; }
+    /* Fix section scroll on mobile */
+    section {
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      align-items: flex-start;
+      padding-top: 80px;
+      padding-bottom: 60px;
+    }
+    #hero {
+      align-items: center;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    /* FIX CRÍTICO: secciones con altura mínima y scroll propio en móvil */
+    section {
+      height: auto !important;
+      min-height: 100vh;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      align-items: flex-start !important;
+      padding-top: 90px;
+      padding-bottom: 60px;
+    }
+    #scroll-container {
+      overflow-y: auto !important;
+      overflow-x: hidden;
+      height: 100vh;
+    }
+
+    /* NAV MÓVIL */
+    nav { padding: 12px 18px; }
     .nav-hamburger { display: flex; }
     nav ul {
       position: fixed; top: 0; right: -100%;
-      width: 75%; max-width: 280px; height: 100vh;
-      background: rgba(10,10,10,0.98);
-      border-left: 1px solid rgba(245,184,0,0.15);
+      width: 78%; max-width: 290px; height: 100vh;
+      background: rgba(8,8,8,0.98);
+      border-left: 1px solid rgba(245,184,0,0.2);
       flex-direction: column; gap: 0;
       justify-content: center; align-items: flex-start;
-      padding: 60px 40px;
+      padding: 60px 36px;
       transition: right 0.4s cubic-bezier(0.22,1,0.36,1);
       z-index: 1050;
     }
     nav ul.open { right: 0; }
     nav ul li { width: 100%; }
     nav ul li a {
-      font-size: 22px; letter-spacing: 3px;
-      padding: 14px 0; display: block;
-      border-bottom: 1px solid rgba(245,184,0,0.08);
+      font-size: 20px; letter-spacing: 3px;
+      padding: 16px 0; display: block;
+      border-bottom: 1px solid rgba(245,184,0,0.1);
     }
-    .nav-logo-text { font-size: 18px; }
-    .nav-logo img { width: 40px; height: 40px; }
-    .hero-logo-img { width: 160px; height: 160px; }
-    .hero-badge { font-size: 11px; letter-spacing: 2px; padding: 5px 14px; margin-bottom: 18px; }
-    .hero-tagline { font-size: 14px; margin-bottom: 32px; }
-    .hero-ctas { gap: 12px; }
-    .btn-primary, .btn-outline { padding: 13px 28px; font-size: 13px; }
-    .hero-scroll-hint { font-size: 10px; bottom: 24px; }
-    .section-title { font-size: clamp(32px, 8vw, 50px); }
-    .section-inner, .servicios-inner, .equipo-inner, .contacto-inner { width: 92%; }
-    .nosotros-grid { grid-template-columns: 1fr; gap: 24px; }
-    .nosotros-text p { font-size: 14px; }
-    .nosotros-stats { grid-template-columns: 1fr 1fr; gap: 14px; }
-    .stat-num { font-size: 36px; }
-    .pillar { padding: 16px 18px; }
-    .pillar-icon { font-size: 22px; }
-    .pillar-title { font-size: 15px; }
-    .pillar-desc { font-size: 13px; }
-    .service-intro { grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 28px; }
-    .service-pill { font-size: 12px; padding: 10px 12px; gap: 8px; }
-    .service-pill span { font-size: 16px; }
-    .request-form-box { padding: 22px 18px; border-radius: 10px; }
-    .req-grid { grid-template-columns: 1fr; gap: 14px; }
+    .nav-logo-text { font-size: 17px; }
+    .nav-logo img { width: 38px; height: 38px; }
+    .nav-logo { gap: 10px; }
+
+    /* HERO */
+    #hero { align-items: center !important; padding-top: 0; }
+    .hero-logo-img { width: 150px; height: 150px; }
+    .hero-badge { font-size: 11px; letter-spacing: 2px; padding: 5px 14px; margin-bottom: 16px; }
+    .hero-tagline { font-size: 14px; margin-bottom: 28px; padding: 0 16px; }
+    .hero-ctas { gap: 12px; flex-direction: column; align-items: center; }
+    .btn-primary, .btn-outline { padding: 14px 36px; font-size: 14px; width: 100%; max-width: 260px; }
+    .hero-scroll-hint { font-size: 10px; bottom: 18px; }
+
+    /* SECCIONES GENERALES */
+    .section-title { font-size: clamp(30px, 7vw, 46px); }
+    .section-inner, .servicios-inner, .equipo-inner, .contacto-inner {
+      width: 92%; padding-top: 0;
+    }
+
+    /* NOSOTROS */
+    .nosotros-grid { grid-template-columns: 1fr; gap: 20px; }
+    .nosotros-text p { font-size: 14px; line-height: 1.7; }
+    .nosotros-stats { grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+    .stat-card { padding: 16px 12px; }
+    .stat-num { font-size: 34px; }
+    .stat-label { font-size: 11px; }
+    .nosotros-pillars { gap: 12px; }
+    .pillar { padding: 14px 16px; }
+    .pillar-icon { font-size: 20px; }
+    .pillar-title { font-size: 14px; }
+    .pillar-desc { font-size: 12px; }
+
+    /* SERVICIOS */
+    .service-intro { grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; margin-top: 20px; }
+    .service-pill { font-size: 12px; padding: 10px 10px; gap: 6px; border-radius: 8px; }
+    .service-pill span { font-size: 15px; }
+    .request-form-box { padding: 20px 16px; border-radius: 10px; }
+    .request-form-title { font-size: 14px; }
+    .request-form-sub { font-size: 12px; margin-bottom: 18px; }
+    .req-grid { grid-template-columns: 1fr; gap: 12px; }
     .req-grid .full { grid-column: 1; }
-    .request-form-title { font-size: 15px; }
-    .request-form-sub { font-size: 12px; }
-    .team-grid { grid-template-columns: 1fr; gap: 24px; margin-top: 28px; }
-    .team-card { padding: 28px 22px; }
-    .team-avatar { width: 90px; height: 90px; }
-    .team-name { font-size: 26px; }
-    .team-bio { font-size: 13px; }
-    .contact-grid { grid-template-columns: 1fr; gap: 24px; }
-    .contact-form-row { grid-template-columns: 1fr; }
-    .contact-item { padding: 14px 16px; }
+    .form-group label { font-size: 11px; }
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 11px 14px; font-size: 14px;
+    }
+
+    /* EQUIPO */
+    .team-grid { grid-template-columns: 1fr; gap: 20px; margin-top: 24px; }
+    .team-card { padding: 24px 20px; border-radius: 12px; }
+    .team-avatar { width: 85px; height: 85px; }
+    .team-name { font-size: 24px; }
+    .team-role { font-size: 12px; letter-spacing: 2px; }
+    .team-bio { font-size: 13px; line-height: 1.6; }
+    .ceo-badge { font-size: 11px; padding: 4px 14px; }
+    .skill-tag { font-size: 11px; padding: 3px 10px; }
+
+    /* CONTACTO */
+    .contact-grid { grid-template-columns: 1fr; gap: 20px; margin-top: 24px; }
+    .contact-info { gap: 12px; }
+    .contact-item { padding: 12px 14px; gap: 12px; }
+    .contact-item-icon { font-size: 20px; }
+    .contact-item-label { font-size: 11px; }
     .contact-item-value { font-size: 13px; }
-    .contact-form-title { font-size: 17px; }
-    footer { padding: 10px 20px; flex-direction: column; gap: 2px; align-items: center; }
-    .footer-copy { font-size: 10px; }
+    .contact-form-title { font-size: 16px; }
+    .contact-form-sub { font-size: 12px; }
+    .contact-form-row { grid-template-columns: 1fr; gap: 12px; }
+    .contact-form { gap: 12px; }
+
+    /* FOOTER */
+    footer {
+      padding: 8px 18px;
+      flex-direction: column; gap: 1px; align-items: center;
+      text-align: center;
+    }
+    .footer-copy { font-size: 10px; letter-spacing: 1px; }
   }
 
   /* ── SMALL MOBILE (≤380px) ── */
   @media (max-width: 380px) {
-    .hero-logo-img { width: 130px; height: 130px; }
+    .hero-logo-img { width: 120px; height: 120px; }
     .service-intro { grid-template-columns: 1fr; }
     .nosotros-stats { grid-template-columns: 1fr; }
-    .team-card { padding: 22px 16px; }
-    nav ul { width: 90%; }
+    .team-card { padding: 18px 14px; }
+    .btn-primary, .btn-outline { max-width: 100%; }
+    nav ul { width: 88%; }
+    .request-form-box { padding: 16px 12px; }
   }
 </style>
 </head>
@@ -958,35 +1031,51 @@ hamburger.addEventListener('click', () => {
 });
 
 // ── BOUNDED SCROLL INSIDE ACTIVE SECTION ──
-// Each section can scroll internally; the wheel moves content but does NOT change section.
-// Sections need overflow-y: auto and a max-height to scroll within themselves.
 sections.forEach(sec => {
   sec.style.overflowY = 'auto';
   sec.style.overflowX = 'hidden';
 });
 
-// Block wheel from bubbling out and changing section — scroll stays inside the active section
+// En móvil, el scroll-container también permite scroll natural
+function isMobile() { return window.innerWidth <= 640; }
+
 document.getElementById('scroll-container').addEventListener('wheel', function(e) {
+  if (isMobile()) return; // En móvil no interferir con el scroll
   const active = sections[currentIndex];
   if (!active) return;
-
   const atTop    = active.scrollTop === 0;
   const atBottom = active.scrollTop + active.clientHeight >= active.scrollHeight - 2;
-
-  // If already at boundary in the scroll direction, just absorb the event (no section change)
   if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) {
     e.preventDefault();
     e.stopPropagation();
     return;
   }
-
-  // Otherwise let the section scroll naturally
   e.stopPropagation();
 }, { passive: false });
 
-// Block keyboard arrow keys from changing section
 window.addEventListener('keydown', function(e) {
+  if (isMobile()) return;
   if (['ArrowUp','ArrowDown','PageUp','PageDown'].includes(e.key)) {
+    e.preventDefault();
+  }
+}, { passive: false });
+
+// ── TOUCH SCROLL (MOBILE) ──
+// Allow native touch scroll inside active section; prevent section change on touch
+let touchStartY = 0;
+document.getElementById('scroll-container').addEventListener('touchstart', function(e) {
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+document.getElementById('scroll-container').addEventListener('touchmove', function(e) {
+  if (!isMobile()) return;
+  const active = sections[currentIndex];
+  if (!active) return;
+  const deltaY = touchStartY - e.touches[0].clientY;
+  const atTop    = active.scrollTop <= 0;
+  const atBottom = active.scrollTop + active.clientHeight >= active.scrollHeight - 2;
+  // Block only if at boundary AND trying to scroll past it
+  if ((deltaY < 0 && atTop) || (deltaY > 0 && atBottom)) {
     e.preventDefault();
   }
 }, { passive: false });
