@@ -501,34 +501,45 @@
 
   /* ── MOBILE (≤640px) ── */
   @media (max-width: 640px) {
-    /* Fix section scroll on mobile */
+    /* FIX CRÍTICO: secciones con altura mínima y scroll propio en móvil */
+
+    /* Secciones toman toda la pantalla y sin scroll interno */
     section {
-      overflow-y: auto !important;
+      position: relative; /* cambiar de absolute para que scroll-container recorte */
+      height: 100vh !important;
+      min-height: 100vh;
+      overflow-y: hidden !important;
       overflow-x: hidden !important;
-      align-items: flex-start;
-      padding-top: 80px;
-      padding-bottom: 60px;
-    }
-    #hero {
-      align-items: center;
+      align-items: center !important;
       padding-top: 0;
       padding-bottom: 0;
+      transition: none !important; /* eliminar animaciones para evitar parpadeos */
+      opacity: 1 !important;
+      transform: none !important;
+      pointer-events: auto !important;
     }
 
-    /* FIX CRÍTICO: secciones con altura mínima y scroll propio en móvil */
-    section {
-      height: auto !important;
-      min-height: 100vh;
-      overflow-y: auto !important;
-      overflow-x: hidden !important;
-      align-items: flex-start !important;
-      padding-top: 90px;
-      padding-bottom: 60px;
-    }
+    /* Scroll container con scroll vertical y scroll snap */
     #scroll-container {
-      overflow-y: auto !important;
+      overflow-y: scroll !important;
       overflow-x: hidden;
       height: 100vh;
+      scroll-snap-type: y mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Para cada sección ser snap */
+    #scroll-container section {
+      scroll-snap-align: start;
+      width: 100%;
+      height: 100vh;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      position: relative !important;
+      opacity: 1 !important;
+      transform: none !important;
+      pointer-events: auto !important;
     }
 
     /* NAV MÓVIL */
@@ -995,6 +1006,22 @@ function goTo(index) {
   const current = sections[currentIndex];
   const next = sections[index];
 
+  // Para móvil, animación deshabilitada, activar sección directamente
+  if (isMobile()) {
+    current.classList.remove('active');
+    next.classList.add('active');
+    currentIndex = index;
+    updateNav();
+    // ajustar scroll para que no quede a medias
+    const scrollContainer = document.getElementById('scroll-container');
+    scrollContainer.scrollTo({
+      top: index * window.innerHeight,
+      behavior: 'smooth'
+    });
+    isTransitioning = false;
+    return;
+  }
+
   current.classList.add(direction === 'up' ? 'exit-up' : 'exit-down');
 
   setTimeout(() => {
@@ -1080,7 +1107,22 @@ document.getElementById('scroll-container').addEventListener('touchmove', functi
   }
 }, { passive: false });
 
-
+// ── SCROLL SNAP EN MÓVIL ──
+if (isMobile()) {
+  const scrollContainer = document.getElementById('scroll-container');
+  let scrollTimeout = null;
+  scrollContainer.addEventListener('scroll', () => {
+    if (scrollTimeout !== null) clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      const scrollTop = scrollContainer.scrollTop;
+      const vh = window.innerHeight;
+      let index = Math.round(scrollTop / vh);
+      if(index < 0) index = 0;
+      if(index >= sections.length) index = sections.length -1;
+      goTo(index);
+    }, 100);
+  });
+}
 
 // ── SERVICES REQUEST ──
 function sendRequest() {
@@ -1187,8 +1229,6 @@ function sendContact() {
     btn.textContent = 'Enviar Mensaje 🚀';
   });
 }
-
-
 </script>
 </body>
 </html>
